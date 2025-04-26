@@ -36,7 +36,7 @@ export default function LinkBox() {
                             >
                             {
                                 group.items.map((item, index) => {
-                                    return <span><Link key={index} color={item.color??'inherit'} underline='hover' href={item.url} target="_blank" >{item.label}</Link></span>
+                                    return <span key={index}><Link color={item.color??'inherit'} underline='hover' href={item.url} target="_blank" >{item.label}</Link></span>
                                 })
                             }
                             </Box>
