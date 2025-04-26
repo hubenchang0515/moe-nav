@@ -1,0 +1,242 @@
+"use client"
+
+import { Box, Collapse, Divider, IconButton, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Paper, Slide, Tooltip } from "@mui/material";
+import HomeIcon from '@mui/icons-material/Home';
+import AppsIcon from '@mui/icons-material/Apps';
+import ExtensionIcon from '@mui/icons-material/Extension';
+import TuneIcon from '@mui/icons-material/Tune';
+import SettingsIcon from '@mui/icons-material/Settings';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+import Brightness4Icon from '@mui/icons-material/Brightness4';
+import BrightnessAutoIcon from '@mui/icons-material/BrightnessAuto';
+import LightModeIcon from '@mui/icons-material/LightMode';
+import DarkModeIcon from '@mui/icons-material/DarkMode';
+import InfoIcon from '@mui/icons-material/Info';
+import { JSX, useEffect, useState } from "react";
+import Link from 'next/link'
+
+export type SideMenuState = "hidden" | "collapse" | "expand";
+
+export interface SideMenuItemProps {
+    label: string;
+    url: string;
+    icon?: JSX.Element;
+    onClick?: ()=>void;
+}
+
+export interface SideMenuGroupProps {
+    label: string;
+    items: SideMenuItemProps[];
+    icon?: JSX.Element;
+}
+
+export type SideMenuEntries = SideMenuGroupProps[];
+
+
+export interface SideMenuProps {
+    home?: SideMenuItemProps;
+    about?: SideMenuItemProps;
+    advance?: SideMenuItemProps;
+
+    open?: boolean;
+    onOpenChanged?: (open:boolean) => void;
+
+    expand?: boolean;
+    onExpandChanged?: (expand:boolean) => void;
+
+    theme: string;
+    toggleTheme: (theme?:string) => void;
+
+    entries?: SideMenuEntries;
+    children?: React.ReactNode;
+}
+
+export default function SideMenu(props:SideMenuProps) {
+    const [groupExpanded, setGroupExpanded] = useState<boolean[]>(Array.from({length: props.entries?.length || 0}, () => false));
+    const [settingsExpanded, setSettingsExpanded] = useState<boolean>(false);
+    const toggleGroup = (index:number) => {
+        const values = [...groupExpanded]
+        values[index] = !groupExpanded[index];
+        setGroupExpanded(values);
+    }
+
+    const [childrenVisible, setChildrenVisible] = useState(false);
+
+    useEffect(() => {
+        if (!props.expand) {
+            const values = Array.from({length: props.entries?.length || 0}, () => false);
+            setGroupExpanded(values);
+            setSettingsExpanded(false);
+        }
+    }, [props.expand]);
+
+    return (
+            <Paper 
+                sx={{
+                    borderRadius: 0,
+                    zIndex:99,
+                }}
+                elevation={12}
+                square
+            >
+                <Collapse sx={{height: '100%'}} orientation="horizontal" in={props.open}>
+                    <Collapse 
+                        sx={{height: '100%'}} 
+                        orientation="horizontal" 
+                        collapsedSize={56 /* 16 + 24 + 16 => 56 */} 
+                        in={props.expand} 
+                        onEntered={()=>setChildrenVisible(true)}
+                        onExit={()=>setChildrenVisible(false)}
+                    >
+                        <Box sx={{
+                            height: '100%',
+                            width: {xs: '100vw', sm: '320px'},
+                            display:"flex", 
+                            flexDirection:"column", 
+                            justifyContent: "flex-start", 
+                            overflowY:"auto", 
+                            '&::-webkit-scrollbar': {display: "none"} // 隐藏滚动条
+                        }}>
+                            <List sx={{width: "100%"}}>
+                                {
+                                    props.home &&
+                                    <ListItem disablePadding>
+                                        <ListItemButton href={props.home.url} component={Link} onClick={props.home.onClick}>
+                                            <ListItemIcon>
+                                                {props.home.icon || <HomeIcon/>}
+                                            </ListItemIcon>
+                                            <ListItemText>
+                                                {props.home.label}
+                                            </ListItemText>
+                                        </ListItemButton>
+                                    </ListItem>
+                                }
+
+                                <Divider/>
+
+                                {
+                                    props.entries?.map((group, index) => (
+                                        <Box key={index}>
+                                            <ListItem disablePadding>
+                                                <ListItemButton onClick={() => {
+                                                    toggleGroup(index);
+                                                    props.onExpandChanged?.(true);
+                                                }}>
+                                                    <ListItemIcon>
+                                                        {group.icon  ?? <AppsIcon/>}
+                                                    </ListItemIcon>
+                                                    <ListItemText primary={group.label}/>
+                                                    {groupExpanded[index] ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+                                                </ListItemButton>
+                                            </ListItem>
+                                            <Collapse in={props.expand && groupExpanded[index]} timeout="auto" unmountOnExit>
+                                                <List component="div" disablePadding >
+                                                    {
+                                                        group?.items.map((item, index) => (
+                                                            <ListItem disablePadding key={index}>
+                                                                <ListItemButton sx={{ pl: 4 }} href={item.url} component={Link} onClick={item.onClick}>
+                                                                    <ListItemIcon>
+                                                                        {item.icon ?? <ExtensionIcon />}
+                                                                    </ListItemIcon>
+                                                                    <ListItemText primary={item.label} />
+                                                                </ListItemButton>
+                                                            </ListItem>
+                                                        ))
+                                                    }
+                                                </List>
+                                            </Collapse>
+                                        </Box>
+                                        
+                                    ))
+                                }
+
+                                <Divider/>
+
+                                <ListItem disablePadding>
+                                    <ListItemButton onClick={() => {
+                                        setSettingsExpanded(!settingsExpanded);
+                                        props.onExpandChanged?.(true);
+                                    }}>
+                                        <ListItemIcon>
+                                            <TuneIcon/>
+                                        </ListItemIcon>
+                                        <ListItemText primary="设置"/>
+                                        {settingsExpanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+                                    </ListItemButton>
+                                </ListItem>
+
+                                <Collapse in={props.expand && settingsExpanded} timeout="auto" unmountOnExit>
+                                    <List component="div" disablePadding>
+                                        <ListItem disablePadding>
+                                            <ListItemButton sx={{ pl: 4 }} onClick={()=>props.toggleTheme()}>
+                                                <ListItemIcon>
+                                                    <Brightness4Icon />
+                                                </ListItemIcon>
+                                                <ListItemText primary="主题" />
+                                                    <Tooltip title="明亮" placement="top" arrow>
+                                                        <IconButton color={props.theme === 'light' ? 'primary' : 'inherit'} onClick={(ev) => {props.toggleTheme('light'); ev.stopPropagation();}}>
+                                                            <LightModeIcon/>
+                                                        </IconButton>
+                                                    </Tooltip>
+
+                                                    <Tooltip title="自动" placement="top" arrow>
+                                                        <IconButton color={props.theme === 'auto' ? 'primary' : 'inherit'} onClick={(ev) => {props.toggleTheme('auto'); ev.stopPropagation();}}>
+                                                            <BrightnessAutoIcon/>
+                                                        </IconButton>
+                                                    </Tooltip>
+
+                                                    <Tooltip title="黑暗" placement="top" arrow>
+                                                        <IconButton color={props.theme === 'dark' ? 'primary' : 'inherit'} onClick={(ev) => {props.toggleTheme('dark'); ev.stopPropagation();}}>
+                                                            <DarkModeIcon/>
+                                                        </IconButton>
+                                                    </Tooltip>
+                                                
+                                            </ListItemButton>
+                                        </ListItem>
+
+                                        {
+                                            props.about &&
+                                            <ListItem disablePadding>
+                                                <ListItemButton sx={{ pl: 4 }} href={props.about.url} component={Link} onClick={props.about.onClick}>
+                                                    <ListItemIcon>
+                                                        {props.about.icon || <InfoIcon />}
+                                                    </ListItemIcon>
+                                                    <ListItemText primary={props.about.label} />
+                                                </ListItemButton>
+                                            </ListItem>
+                                        }
+
+                                        {
+                                            props.advance &&
+                                            <ListItem disablePadding>
+                                                <ListItemButton sx={{ pl: 4 }} href={props.advance.url} component={Link} onClick={props.advance.onClick}>
+                                                    <ListItemIcon>
+                                                        {props.advance.icon || <SettingsIcon />}
+                                                    </ListItemIcon>
+                                                    <ListItemText primary={props.advance.label} />
+                                                </ListItemButton>
+                                            </ListItem>
+                                        }
+                                        
+                                    </List>
+                                </Collapse>    
+                            </List>
+
+                            <Box flexGrow={1} flexShrink={1} onClick={()=>props.onExpandChanged?.(true)}/>
+
+                            {
+                                props.children && 
+                                <Slide in={props.expand && childrenVisible} direction="up" mountOnEnter unmountOnExit>
+                                    <Box>
+                                        {props.children}
+                                    </Box>
+                                </Slide>
+                            }
+                            
+                        </Box>
+                    </Collapse>
+                </Collapse>
+            </Paper>
+    )
+}
