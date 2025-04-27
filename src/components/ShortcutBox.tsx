@@ -3,10 +3,11 @@ import { Grid, Button, Paper } from "@mui/material"
 import Shortcut from "./Shortcut"
 import { SHORTCUTS } from "@/config"
 import AddIcon from '@mui/icons-material/Add';
+import Card from "./Card";
 
 export default function ShortcutBox() {
     return (
-        <Paper sx={[{borderRadius:1, backgroundColor:'rgba(255,255,255,0.7)'}, (theme)=>theme.applyStyles('dark', {backgroundColor:'rgba(0,0,0,0.7)'})]}>
+        <Card>
             <Grid container columns={24} spacing={2}>
                 {
                     SHORTCUTS.map((item, index)=>{
@@ -23,6 +24,6 @@ export default function ShortcutBox() {
                     </Button>
                 </Grid>
             </Grid>
-        </Paper>
+        </Card>
     )
 }

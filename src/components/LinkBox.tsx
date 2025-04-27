@@ -1,6 +1,7 @@
 "use client";
 import { LINKS } from "@/config";
 import { Box, Link, Paper, Typography } from "@mui/material";
+import Card from "./Card";
 
 export interface LinkProps {
     label: string;
@@ -16,7 +17,8 @@ export interface LinkGroup {
 
 export default function LinkBox() {
     return (
-        <Paper sx={[{borderRadius:1, padding:2, display:'flex', flexDirection:'column', gap:2, backgroundColor:'rgba(255,255,255,0.7)'}, (theme)=>theme.applyStyles('dark', {backgroundColor:'rgba(0,0,0,0.7)'})]}>
+        <Card>
+            <Box sx={{padding: 2, display:'flex', flexDirection:'column', gap:2,}}>
             {/* <Typography>申请收录</Typography> */}
             {
                 LINKS.map((group, index) => {
@@ -44,6 +46,7 @@ export default function LinkBox() {
                     )
                 })
             }
-        </Paper>
+            </Box>
+        </Card>
     )
 }

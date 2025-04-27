@@ -1,10 +1,11 @@
-import { AppBar, Box, IconButton, Toolbar, Tooltip } from "@mui/material";
+import { AppBar, Box, IconButton, Paper, Toolbar, Tooltip } from "@mui/material";
 import React from "react";
 
 import BrightnessAutoIcon from '@mui/icons-material/BrightnessAuto';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import GitHubIcon from '@mui/icons-material/GitHub';
+import Card from "./Card";
 
 export interface TitleBarProps {
     title: string
@@ -45,20 +46,24 @@ export default function TitleBar(props:TitleBarProps) {
     return (
         <Box>
             <AppBar component="nav" color="primary" elevation={0} sx={[{backgroundColor:'rgba(255,255,255,0.0)'}, (theme)=>theme.applyStyles('dark', {backgroundColor:'rgba(0,0,0,0.0)'})]}>
-                <Toolbar>
+                <Toolbar sx={{gap:1}}>
 
                     <Box sx={{ flexGrow: 1 }} />
 
+                    <Card>
                     <Tooltip title={themeName(props.theme)} placement="bottom" arrow>
                         <IconButton color="inherit" onClick={() => {props.onToggleTheme(nextTheme(props.theme)!);}}>
                             { themeIcon(props.theme) }
                         </IconButton>
                     </Tooltip>
-                    <Tooltip title={themeName(props.theme)} placement="bottom" arrow>
+                    </Card>
+                    <Card>
+                    <Tooltip title='源码' placement="bottom" arrow>
                         <IconButton color="inherit" href={props.url} target="_blank">
                             <GitHubIcon/>
                         </IconButton>
                     </Tooltip>
+                    </Card>
                 </Toolbar>
             </AppBar>
             <Toolbar/>

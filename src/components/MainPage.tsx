@@ -7,6 +7,7 @@ import KeyboardDoubleArrowUpIcon from '@mui/icons-material/KeyboardDoubleArrowUp
 import LinkBox from "@/components/LinkBox";
 import { useState } from "react";
 import TitleBar from "./TitleBar";
+import Card from "./Card";
 
 export default function MainPage() {
     const {mode, setMode} = useColorScheme();
@@ -41,6 +42,7 @@ export default function MainPage() {
                         marginTop: showLinks ? 0 : '40vh', 
                         display:'flex', 
                         flexDirection:'column', 
+                        justifyContent:'center',
                         gap:2,
                         transition:'all 500ms ease',
                     }}
@@ -50,11 +52,11 @@ export default function MainPage() {
                 </Container>
                 
                 <Box sx={{display:'flex', justifyContent:'center'}}>
-                    <Paper sx={[{backgroundColor:'rgba(255,255,255,0.7)'}, (theme)=>theme.applyStyles('dark', {backgroundColor:'rgba(0,0,0,0.7)'})]}>
+                    <Card>
                         <IconButton color="primary" onClick={()=>setShowLinks(!showLinks)}>
                             {showLinks ? <KeyboardDoubleArrowDownIcon/> : <KeyboardDoubleArrowUpIcon/>}
                         </IconButton>
-                    </Paper>
+                    </Card>
                 </Box>
 
                 <Container maxWidth='lg' sx={showLinks ? {marginTop: 0, marginBottom:1, flex:1, transition:'all 500ms ease', overflow:'auto'} : {marginTop:'100vh', transition:'all 500ms ease'}}>
