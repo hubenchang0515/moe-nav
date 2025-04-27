@@ -1,0 +1,1 @@
+export const SHORTCUTS_KEY = 'moe-nav.shortcuts';

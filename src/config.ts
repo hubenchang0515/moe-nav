@@ -22,12 +22,6 @@ export const SEARCH_ENGINES:SearchEngine[] = [
 // 快捷方式
 export const SHORTCUTS:ShortcutProps[] = [
     {
-        label: "GitHub",
-        url: "https://github.com",
-        icon: '/logo/github.svg',
-    },
-
-    {
         label: "Qt Theme",
         url: "https://xplanc.org/QtTheme",
         icon: 'https://xplanc.org/QtTheme/icon.svg',
@@ -44,6 +38,7 @@ export const SHORTCUTS:ShortcutProps[] = [
         url: "https://xplanc.org/shift",
         icon: 'https://xplanc.org/shift/favicon.svg',
     },
+    
 ]
 
 // 推荐链接
