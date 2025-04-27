@@ -10,7 +10,7 @@ import TitleBar from "./TitleBar";
 import Card from "./Card";
 import AddShortcutDialog from "./AddShortcutDialog";
 import { SHORTCUTS } from "@/config";
-import { SHORTCUTS_KEY } from "@/utils/storage";
+import { SHORTCUTS_KEY, SHOWLINKS_KEY } from "@/utils/storage";
 import { ShortcutProps } from "./Shortcut";
 
 export default function MainPage() {
@@ -19,6 +19,20 @@ export default function MainPage() {
     const [openDialog, setOpenDialog] = useState(false);
     const [removeMode, setRemoveMode] = useState(false);
     const [shortcuts, setShortcuts] = useState<ShortcutProps[]>([]);
+
+    useEffect(() => {
+        const item = localStorage.getItem(SHOWLINKS_KEY);
+        if (item) {
+            setTimeout(() => {
+                setShowLinks(item === 'yes')
+            }, 500);
+        }
+    }, []);
+
+    const onToggleShowLinks = (show:boolean) => {
+        localStorage.setItem(SHOWLINKS_KEY, show ? 'yes' : 'noe');
+        setShowLinks(show);
+    }
 
     useEffect(() => {
         const item = localStorage.getItem(SHORTCUTS_KEY);
@@ -89,7 +103,7 @@ export default function MainPage() {
                 
                 <Box sx={{display:'flex', justifyContent:'center'}}>
                     <Card>
-                        <IconButton color="primary" onClick={()=>setShowLinks(!showLinks)}>
+                        <IconButton color="primary" onClick={()=>onToggleShowLinks(!showLinks)}>
                             {showLinks ? <KeyboardDoubleArrowDownIcon/> : <KeyboardDoubleArrowUpIcon/>}
                         </IconButton>
                     </Card>
