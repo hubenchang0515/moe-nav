@@ -1,4 +1,4 @@
-import { AppBar, Box, IconButton, Paper, Toolbar, Tooltip } from "@mui/material";
+import { AppBar, Box, IconButton, Toolbar, Tooltip } from "@mui/material";
 import React from "react";
 
 import BrightnessAutoIcon from '@mui/icons-material/BrightnessAuto';

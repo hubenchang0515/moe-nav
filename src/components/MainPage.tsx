@@ -1,7 +1,7 @@
 "use client";
 import SearchBox from "@/components/SearchBox";
 import ShortcutBox from "@/components/ShortcutBox";
-import { Box, Container, IconButton, Paper, useColorScheme } from "@mui/material";
+import { Box, Container, IconButton, useColorScheme } from "@mui/material";
 import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
 import KeyboardDoubleArrowUpIcon from '@mui/icons-material/KeyboardDoubleArrowUp';
 import LinkBox from "@/components/LinkBox";

@@ -38,6 +38,12 @@ export const SHORTCUTS:ShortcutProps[] = [
         url: "https://xplanc.org/shift",
         icon: 'https://xplanc.org/shift/favicon.svg',
     },
+
+    {
+        label: "Phosphophyllite",
+        url: "https://xplanc.org/Phosphophyllite/",
+        icon: 'https://xplanc.org/Phosphophyllite/favicon.svg',
+    },
     
 ]
 

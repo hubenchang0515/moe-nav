@@ -8,6 +8,9 @@ import theme from "@/utils/theme";
 export const metadata: Metadata = {
   title: "萌萌导航",
   description: "一个简单实用的导航主页",
+  icons: {
+    icon: `/moe-nav/favicon.svg`,
+  }
 };
 
 export default function RootLayout({

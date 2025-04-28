@@ -1,6 +1,6 @@
 "use client";
 import { LINKS } from "@/config";
-import { Box, Link, Paper, Typography } from "@mui/material";
+import { Box, Link, Typography } from "@mui/material";
 import Card from "./Card";
 
 export interface LinkProps {
